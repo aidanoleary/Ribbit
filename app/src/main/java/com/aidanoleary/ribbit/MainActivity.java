@@ -38,7 +38,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Create new intent to bring the user to the LoginActivity
         Intent intent = new Intent(this, LoginActivity.class);
+        //Stop user from being able to navigate back to the main screen
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
