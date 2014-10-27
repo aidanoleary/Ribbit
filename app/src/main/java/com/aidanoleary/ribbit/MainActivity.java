@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.parse.ParseUser;
+
 import java.util.Locale;
 
 
@@ -37,14 +39,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Create new intent to bring the user to the LoginActivity
-        Intent intent = new Intent(this, LoginActivity.class);
-        //Stop user from being able to navigate back to the main screen
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        startActivity(intent);
+        navigateToLogin();
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -54,6 +49,16 @@ public class MainActivity extends Activity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+    }
+
+    private void navigateToLogin() {
+        //Create new intent to bring the user to the LoginActivity
+        Intent intent = new Intent(this, LoginActivity.class);
+        //Stop user from being able to navigate back to the main screen
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        startActivity(intent);
     }
 
 
@@ -70,7 +75,9 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            ParseUser.logOut();
+            navigateToLogin();
             return true;
         }
         return super.onOptionsItemSelected(item);
