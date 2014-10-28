@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.parse.ParseUser;
 
 import java.util.Locale;
 
@@ -32,19 +35,28 @@ public class MainActivity extends Activity {
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+    public static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Create new intent to bring the user to the LoginActivity
-        Intent intent = new Intent(this, LoginActivity.class);
-        //Stop user from being able to navigate back to the main screen
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        startActivity(intent);
+        // Check if there is a user currently logged in
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if(currentUser == null) {
+            //Create new intent to bring the user to the LoginActivity
+            Intent intent = new Intent(this, LoginActivity.class);
+            //Stop user from being able to navigate back to the main screen
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            startActivity(intent);
+        }
+        else {
+            Log.i(TAG, currentUser.getUsername());
+        }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
