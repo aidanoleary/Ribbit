@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +28,11 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Enable progress indicator
+        //RequestWindowFeature needs to be called before setContentView()
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
         setContentView(R.layout.activity_login);
 
         mSignUpTextView = (TextView) findViewById(R.id.signUpText);
@@ -62,9 +68,15 @@ public class LoginActivity extends Activity {
                 }
                 else {
                     // Login
+                    //Make progress indicator visible
+                    setProgressBarIndeterminateVisibility(true);
+
                     ParseUser.logInInBackground(username, password, new LogInCallback() {
                         @Override
                         public void done(ParseUser parseUser, ParseException e) {
+                            //Hide progress indicator
+                            setProgressBarIndeterminateVisibility(false);
+
                             if(e == null) {
                                 //Login was successful
                                 // The new user was successfully created
